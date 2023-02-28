@@ -803,7 +803,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rigidBody: {fileID: 905243659}
   _speed: 5
-  _jumpForse: 100
+  _jumpForse: 8
   _animator: {fileID: 905243656}
 --- !u!114 &905243662
 MonoBehaviour:
