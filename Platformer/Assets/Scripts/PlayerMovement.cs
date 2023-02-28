@@ -16,8 +16,11 @@ public class PlayerMovement : MonoBehaviour
     private float _rightDirection = 0;
     private float _leftDirection = 180;
 
+    private bool _canJump;
+
     private void Awake()
     {
+        _canJump = true;
         _rigidBody.freezeRotation = true;
     }
 
@@ -39,9 +42,11 @@ public class PlayerMovement : MonoBehaviour
         {
             CheckGround();
 
-            if (_isGround)
+            if (_isGround && _canJump)
             {
-                _rigidBody.AddForce(Vector2.up * _jumpForse);
+                _rigidBody.AddForce(Vector2.up * _jumpForse, ForceMode2D.Impulse);
+
+                StartCoroutine(WaitTimeBeforeNextJump());
             }
         }
 
@@ -69,5 +74,16 @@ public class PlayerMovement : MonoBehaviour
         {
             _isGround = false;
         }
+    }
+
+    private IEnumerator WaitTimeBeforeNextJump()
+    {
+        float timeBeforeNextJump = 0.5f;
+
+        _canJump = false;
+
+        yield return new WaitForSeconds(timeBeforeNextJump);
+
+        _canJump = true;
     }
 }
