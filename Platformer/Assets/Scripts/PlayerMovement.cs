@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _canJump;
 
+    private const string _isMovingAnimatorParameter = "IsMoving";
+
     private void Awake()
     {
         _canJump = true;
@@ -40,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            CheckGround();
+            _isGround = CheckGround();
 
             if (_isGround && _canJump)
             {
@@ -50,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        _animator.SetBool("IsMoving", _isMoving);
+        _animator.SetBool(_isMovingAnimatorParameter, _isMoving);
     }
 
     private void Moving(float direction)
@@ -62,18 +64,11 @@ public class PlayerMovement : MonoBehaviour
         _isMoving = true;
     }
 
-    private void CheckGround()
+    private bool CheckGround()
     {
         RaycastHit2D hit = Physics2D.Raycast(_rigidBody.position, Vector2.down, _rayDistance, LayerMask.GetMask("Ground"));
 
-        if (hit.collider != null)
-        {
-            _isGround = true;
-        }
-        else
-        {
-            _isGround = false;
-        }
+        return hit.collider != null;
     }
 
     private IEnumerator WaitTimeBeforeNextJump()
